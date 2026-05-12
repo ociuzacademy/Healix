@@ -1,0 +1,28 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Super Admin Profile</h3>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+        <table class="table table-borderless mb-0" border="1" cellpadding="10">
+            <tbody>
+                <tr>
+                    <th style="width: 150px;">Name:</th>
+                    <td>{{ superadmin.name }}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>{{ superadmin.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+    </div>
+</div>
+{% endblock %}

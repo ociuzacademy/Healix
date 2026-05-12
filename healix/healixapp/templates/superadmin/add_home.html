@@ -1,0 +1,73 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+<div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <!-- Page Heading -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h3>Add Old Age Home</h3>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow p-4">
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="homeName" class="form-label">Name:</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" id="homeName" name="name" class="form-control" required>
+                        </div>
+                    </div>
+                    <br>    
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="homeAddress" class="form-label">Address:</label>
+                        </div>
+                        <div class="col-8">
+                            <textarea id="homeAddress" name="address" class="form-control" rows="2" required></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="homePhone" class="form-label">Phone:</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" id="homePhone" name="phone_number" class="form-control" maxlength="12" minlength="10" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="homePlace" class="form-label">Place:</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" id="homePlace" name="place" class="form-control" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-success px-5">Add Home</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div> <!-- End Card -->
+        </div> <!-- End Column -->
+    </div> <!-- End Row -->
+
+</div> <!-- End Container -->
+{% endblock %}

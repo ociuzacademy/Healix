@@ -1,0 +1,24 @@
+{% extends "nurse/nurse_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Nurse Profile</h3>
+    <div class="card p-3 shadow">
+        <h5>Name: {{ nurse.name }}</h5>
+        <p><strong>Email:</strong> {{ nurse.email }}</p>
+        <p><strong>Phone:</strong> {{ nurse.phone_number }}</p>
+        <p><strong>Address:</strong> {{ nurse.address }}</p>
+        <p><strong>Place:</strong> {{ nurse.place }}</p>
+        <p><strong>Home:</strong> {{ nurse.home.name }}</p>
+        <p><strong>Role:</strong> {{ nurse.role }}</p>
+        <p><small>Created at: {{ nurse.created_at|date:"Y-m-d H:i" }}</small></p>
+ 
+    <div class="text-center mt-3">
+        
+        <a href="{% url 'nurse_update_profile' nurse.id %}" class="btn btn-primary">Update Profile</a>
+    </div>
+</div>
+{% endblock %}

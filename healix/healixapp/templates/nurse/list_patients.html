@@ -1,0 +1,48 @@
+{% extends "nurse/nurse_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <h3 class="text-center">Patients in {{ home.name }}</h3>
+    <table class="table table-bordered text-center" border="1" cellpadding="10">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Room No</th>
+                <th>Relative Name</th>
+                <th>Relative Contact</th>
+               
+                <th>Prescriptions</th> <!-- New column for button -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.age }}</td>
+                <td>{{ patient.gender }}</td>
+                <td>{{ patient.room_number }}</td>
+                <td>{{ patient.emergency_contact_name }}</td>
+                <td>{{ patient.emergency_phone }}</td>
+                
+                </td>
+                <td>
+    <a href="{% url 'nurse_view_prescriptions' resident_id=patient.id %}" class="btn btn-primary btn-sm">
+        View Prescriptions
+    </a>
+</td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No patients found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">⬅ Back</button>
+</div>
+
+</div>
+{% endblock %}

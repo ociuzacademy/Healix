@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Healix | Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .app-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #fafafa;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            border-color: #f6b93b;
+            outline: none;
+            box-shadow: 0 0 6px rgba(246, 185, 59, 0.3);
+        }
+
+        /* Password field wrapper */
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Eye icon */
+        .eye-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Eye design using CSS */
+        .eye-icon::before {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 12px;
+            border: 2px solid #777;
+            border-radius: 50px;
+        }
+
+        /* Pupil */
+        .eye-icon::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 7px;
+            width: 6px;
+            height: 6px;
+            background: #777;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        /* Closed eye */
+        .eye-closed::before {
+            border: none;
+            border-top: 2px solid #777;
+            transform: rotate(45deg);
+        }
+
+        .eye-closed::after {
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #f6b93b;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #e58e26;
+        }
+
+        .error {
+            color: #d63031;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer-text a {
+            color: #e58e26;
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="app-title">Healix</div>
+
+        <div class="login-container">
+
+            <h2>Login</h2>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="email" name="email" placeholder="Email" required class="form-control">
+
+                <!-- Password with eye icon -->
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password"
+                           placeholder="Password" required class="form-control">
+
+                    <div class="eye-icon" id="toggleEye"></div>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <div class="footer-text">
+                <p>Forgot your password? <a href="#">Reset</a></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const passwordField = document.getElementById("password");
+        const toggleEye = document.getElementById("toggleEye");
+
+        toggleEye.onclick = () => {
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleEye.classList.add("eye-closed");
+            } else {
+                passwordField.type = "password";
+                toggleEye.classList.remove("eye-closed");
+            }
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h3>Add Admin</h3>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <button onclick="window.history.back()" class="btn btn-primary">Back</button>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow p-4">
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Admin Name -->
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="adminName" class="form-label">Name:</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" id="adminName" name="name" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Admin Email -->
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">
+                            <label for="adminEmail" class="form-label">Email:</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="email" id="adminEmail" name="email" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Admin Password with Eye Toggle -->
+                    <div class="row mb-3">
+    <div class="col-4 text-end">
+        <label for="adminPassword" class="form-label">Password:</label>
+    </div>
+    <div class="col-8">
+        <div class="password-wrapper" style="position: relative;">
+            <input type="password" id="adminPassword" name="password" class="form-control" required>
+
+            <div class="eye-icon" data-target="adminPassword"></div>
+        </div>
+    </div>
+</div>
+
+
+                    <!-- Select Old Age Home -->
+                    <div class="row mb-4">
+                        <div class="col-4 text-end">
+                            <label for="adminHome" class="form-label">Old Age Home:</label>
+                        </div>
+                        <div class="col-8">
+                            <select id="adminHome" name="home" class="form-select" required>
+                                <option value="">-- Choose Home --</option>
+                                {% for home in homes %}
+                                    <option value="{{ home.id }}">{{ home.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary px-5">Add Admin</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

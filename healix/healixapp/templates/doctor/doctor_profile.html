@@ -1,0 +1,23 @@
+{% extends "doctor/doctor_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <h3 class="text-center mb-4">Doctor Profile</h3>
+    <div class="card p-3 shadow">
+        <h5>Name: {{ doctor.name }}</h5>
+        <p><strong>Email:</strong> {{ doctor.email }}</p>
+        <p><strong>Phone:</strong> {{ doctor.phone_number }}</p>
+        <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+        <p><strong>Qualification:</strong> {{ doctor.qualification }}</p>
+        <p><strong>Address:</strong> {{ doctor.address }}</p>
+        <p><strong>Place:</strong> {{ doctor.place }}</p>
+        <p><strong>Home:</strong> {{ doctor.home.name }}</p>
+        <p><strong>Role:</strong> {{ doctor.role }}</p>
+        <p><small>Created at: {{ doctor.created_at|date:"Y-m-d H:i" }}</small></p>
+    
+    <div class="text-center mt-3">
+        <a href="{% url 'doctor_dashboard' %}" class="btn btn-secondary">Back</a>
+        <a href="{% url 'doctor_update_profile' doctor.id %}" class="btn btn-primary">Update Profile</a>
+    </div>
+    </div>
+</div>
+{% endblock %}

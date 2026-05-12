@@ -1,0 +1,28 @@
+{% extends "nurse/nurse_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Prescriptions for {{ resident.name }}</h3>
+
+    {% if prescriptions %}
+        <ul class="list-group">
+            {% for pres in prescriptions %}
+            <li class="list-group-item">
+                <strong>{{ pres.medicine_name }}</strong><br>
+                <strong>{{ pres.dosage }}</strong><br>
+                <strong>{{ pres.duration }}</strong><br>
+                {{ pres.additional_notes }}<br>
+                <em>{{ pres.created_at|date:"Y-m-d H:i" }}</em>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-muted">No prescriptions available.</p>
+    {% endif %}
+
+   
+</div>
+{% endblock %}

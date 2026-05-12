@@ -1,0 +1,27 @@
+{% extends 'admin/admin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <h3 class="text-center mb-4">Admin Profile</h3>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+        <center><table class="table table-borderless mb-0"  border="1" cellpadding="10">
+            <tbody>
+                <tr>
+                    <th style="width: 150px;">Name:</th>
+                    <td>{{ admin.name }}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>{{ admin.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+        </center>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary px-4">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Edit Old Age Home</h3>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+        <form method="POST">
+            {% csrf_token %}
+            <table class="table table-borderless mb-0">
+                <tbody>
+                    <tr>
+                        <th style="width: 120px;">Name:</th>
+                        <td><input type="text" name="name" value="{{ home.name }}" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <th>Address:</th>
+                        <td><textarea name="address" class="form-control" rows="2" required>{{ home.address }}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td><input type="text" name="phone_number" value="{{ home.phone_number }}" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <th>Place:</th>
+                        <td><input type="text" name="place" value="{{ home.place }}" class="form-control" required></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Update Home</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "doctor/doctor_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <h3 class="text-center">Update Profile</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ doctor.name }}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ doctor.email }}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone_number" value="{{ doctor.phone_number }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Place</label>
+            <input type="text" name="place" value="{{ doctor.place }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <textarea name="address" class="form-control">{{ doctor.address }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Specialization</label>
+            <input type="text" name="specialization" value="{{ doctor.specialization }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Qualification</label>
+            <input type="text" name="qualification" value="{{ doctor.qualification }}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Update</button>
+        <a href="{% url 'doctor_profile' doctor.id %}" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+{% endblock %}

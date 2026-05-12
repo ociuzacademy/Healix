@@ -1,0 +1,72 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<style>
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 12px 20px;
+        /* Increase row height & spacing */
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .table-custom th {
+        background-color: #f6d365;
+        /* or #fda085 for admins */
+        color: #333;
+    }
+
+    .table-custom td {
+        min-width: 120px;
+        /* Increase column width */
+    }
+
+    .table-custom tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary">Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Admins</h3>
+
+    <div class="table-responsive">
+       <table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Home</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for admin in admins %}
+        <tr>
+            <td>{{ admin.name }}</td>
+            <td>{{ admin.email }}</td>
+            <td>{{ admin.home.name }}</td>
+            <td>
+                <a href="{% url 'edit_admin' admin.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_admin' admin.id %}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+    </div>
+</div>
+{% endblock %}

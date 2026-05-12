@@ -1,0 +1,72 @@
+{% extends 'admin/admin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <div class="card shadow p-4" style="max-width: 600px; margin: auto;">
+        <h3 class="text-center mb-4">Edit Resident</h3>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" value="{{ resident.name }}" required>
+            </div>
+            <br>
+
+            <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input type="number" name="age" class="form-control" value="{{ resident.age }}" required>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select name="gender" class="form-control" required>
+                    <option value="Male" {% if resident.gender == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if resident.gender == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if resident.gender == "Other" %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Room Number</label>
+                <input type="text" name="room_number" class="form-control" value="{{ resident.room_number }}">
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Relative Name</label>
+                <input type="text" name="emergency_contact_name" class="form-control" value="{{ resident.emergency_contact_name }}" required>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Relative Phone</label>
+                <input type="text" name="emergency_phone" class="form-control" value="{{ resident.emergency_phone }}" required>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Relative Address</label>
+                <textarea name="emergency_address" class="form-control">{{ resident.emergency_address }}</textarea>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label class="form-label">Relative Place</label>
+                <input type="text" name="emergency_place" class="form-control" value="{{ resident.emergency_place }}">
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-5">Update</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary px-5">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("cancelBtn").addEventListener("click", function() {
+        window.location.href = "{% url 'view_residents' %}";
+    });
+</script>
+{% endblock %}

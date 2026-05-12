@@ -1,0 +1,54 @@
+{% extends 'admin/admin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Residents in {{ home.name }}</h3>
+    <table class="table table-bordered text-center" border="1" cellpadding="10">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Room No</th>
+                <th>Relative Contact Name</th>
+                <th>Relative Contact Phone</th>
+                <th>Relative Address</th>
+                <th>Relative Place</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resident in residents %}
+            <tr>
+                <td>{{ resident.name }}</td>
+                <td>{{ resident.age }}</td>
+                <td>{{ resident.gender }}</td>
+                <td>{{ resident.room_number }}</td>
+                <td>{{ resident.emergency_contact_name }}</td>
+                <td>{{ resident.emergency_phone }}</td>
+                <td>{{ resident.emergency_address }}</td>
+                <td>{{ resident.emergency_place }}</td>
+                <td>
+                    <a href="{% url 'edit_resident' resident.id %}" class="btn btn-sm btn-primary">Edit</a>
+                </td>
+                <td>
+                     <a href="{% url 'delete_resident' resident.id %}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this resident?');">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No residents added yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

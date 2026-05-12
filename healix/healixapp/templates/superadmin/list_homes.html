@@ -1,0 +1,78 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<style>
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 12px 20px;
+        /* Increase row height & spacing */
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .table-custom th {
+        background-color: #f6d365;
+        /* or #fda085 for admins */
+        color: #333;
+    }
+
+    .table-custom td {
+        min-width: 120px;
+        /* Increase column width */
+    }
+
+    .table-custom tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Old Age Homes</h3>
+
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Place</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for home in homes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ home.name }}</td>
+                    <td>{{ home.place }}</td>
+                    <td>{{ home.address }}</td>
+                    <td>{{ home.phone_number }}</td>
+                    <td>
+                        <a href="{% url 'edit_home' home.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_home' home.id %}" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Are you sure to delete?');">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No Old Age Homes added yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}

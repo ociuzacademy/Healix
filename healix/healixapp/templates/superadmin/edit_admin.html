@@ -1,0 +1,74 @@
+{% extends 'superadmin/superadmin_dashboard.html' %}
+
+{% block content %}
+<div class="container my-4">
+
+    <div class="mb-3">
+        <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+    </div>
+
+    <h3 class="text-center mb-4">Edit Admin</h3>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+        <form method="POST">
+            {% csrf_token %}
+            <table class="table table-borderless mb-0">
+                <tbody>
+
+                    <!-- Name -->
+                    <tr>
+                        <th style="width: 120px;">Name:</th>
+                        <td>
+                            <input type="text" name="name" value="{{ admin.name }}" class="form-control" required>
+                        </td>
+                    </tr>
+
+                    <!-- Email -->
+                    <tr>
+                        <th>Email:</th>
+                        <td>
+                            <input type="email" name="email" value="{{ admin.email }}" class="form-control" required>
+                        </td>
+                    </tr>
+
+                    <!-- Password -->
+                    <tr>
+    <th>Password:</th>
+    <td>
+        <div style="position: relative;">
+            <input type="password" id="editAdminPassword" name="password"
+                   value="{{ admin.password }}" class="form-control" required>
+
+            <div class="eye-icon" data-target="editAdminPassword"></div>
+        </div>
+    </td>
+</tr>
+
+
+
+                    <!-- Home -->
+                    <tr>
+                        <th>Home:</th>
+                        <td>
+                            <select name="home" class="form-select" required>
+                                {% for home in homes %}
+                                    <option value="{{ home.id }}"
+                                        {% if admin.home.id == home.id %}selected{% endif %}>
+                                        {{ home.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Update Admin</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

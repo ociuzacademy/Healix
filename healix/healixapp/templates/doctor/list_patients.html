@@ -1,0 +1,40 @@
+{% extends "doctor/doctor_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">⬅ Back</button>
+</div>
+
+    <h3 class="text-center mb-4">Patients</h3>
+    <table class="table table-bordered text-center" border="1" cellpadding="10">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Room No</th>
+                <th>Emergency Contact</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.age }}</td>
+                <td>{{ patient.gender }}</td>
+                <td>{{ patient.room_number }}</td>
+                <td>{{ patient.emergency_contact_name }} ({{ patient.emergency_phone }})</td>
+                <td>
+                    <a href="{% url 'doctor_view_vitals' patient.id %}" class="btn btn-success btn-sm">View Vitals</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No patients found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

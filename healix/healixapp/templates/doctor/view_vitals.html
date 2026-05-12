@@ -1,0 +1,174 @@
+{% extends "doctor/doctor_dashboard.html" %}
+{% block content %}
+<div class="container my-4">
+
+    <div class="mb-3">
+        <button onclick="window.history.back()" class="btn btn-secondary">⬅ Back</button>
+    </div>
+
+    <h3 class="text-center mb-4">Vitals for {{ resident.name }}</h3>
+
+    <!-- ===== VITALS TABLE ===== -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Blood Pressure</th>
+                    <th>Blood Sugar</th>
+                    <th>Heart Rate</th>
+                    <th>Oxygen Level (%)</th>
+                    <th>Recorded At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vitals_list %}
+                <tr>
+                    <td>{{ v.blood_pressure }}</td>
+                    <td>{{ v.blood_sugar }}</td>
+                    <td>{{ v.heart_rate }}</td>
+
+                    <td>{{ v.oxygen_level }}</td>
+                    <td>{{ v.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No vitals recorded yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== VITALS BAR CHART ===== -->
+    <div class="my-4">
+        <canvas id="vitalsChart" height="120"></canvas>
+    </div>
+
+    <!-- ===== PRESCRIPTION FORM ===== -->
+    <div class="card mt-4 shadow-sm p-4">
+        <h5 class="mb-4 text-primary">New Prescription</h5>
+
+        <form method="POST" action="{% url 'add_prescription' resident.id %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Medicine Name</label>
+                <input type="text" class="form-control" name="medicine_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Dosage</label>
+                <input type="text" class="form-control" name="dosage" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duration</label>
+                <input type="text" class="form-control" name="duration" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Additional Notes</label>
+                <textarea class="form-control" name="additional_notes" rows="3"></textarea>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Save Prescription</button>
+            </div>
+        </form>
+    </div>
+
+    {% if resident.prescription_set.exists %}
+    <div class="mt-5">
+        <h5>Previous Prescriptions</h5>
+        <ul class="list-group">
+            {% for pres in resident.prescription_set.all %}
+            <li class="list-group-item">
+                <strong>{{ pres.medicine_name }}</strong><br>
+                Dosage: {{ pres.dosage }}<br>
+                Duration: {{ pres.duration }}<br>
+                {% if pres.additional_notes %}
+                Notes: {{ pres.additional_notes }}<br>
+                {% endif %}
+                <em>Prescribed on {{ pres.created_at|date:"Y-m-d H:i" }}</em>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    const bp = parseFloat("{{ blood_pressure|default:'0' }}");
+    const sugar = parseFloat("{{ blood_sugar|default:'0' }}");
+    const hr = parseFloat("{{ heart_rate|default:'0' }}");
+
+
+    const spo2 = parseFloat("{{ oxygen_level|default:'0' }}");
+
+    // Color Logic
+    function bpColor(v) {
+        if (v > 140) return "red";
+        if (v < 90) return "orange";
+        return "green";
+    }
+
+    function sugarColor(v) {
+        if (v < 70) return "orange";
+        if (v > 140) return "red";
+        return "green";
+    }
+
+    function hrColor(v) {
+        if (v < 60) return "orange";
+        if (v > 100) return "red";
+        return "green";
+    }
+
+    function spo2Color(v) {
+        if (v < 95) return "orange";
+        return "green";
+    }
+
+    const values = [bp, sugar, hr, spo2];
+    const colors = [
+        bpColor(bp),
+        sugarColor(sugar),
+        hrColor(hr),
+        spo2Color(spo2)
+    ];
+
+    const vitalsData = {
+        labels: ["Blood Pressure (Sys)", "Blood Sugar", "Heart Rate", "Oxygen Level"],
+        datasets: [{
+            label: "Latest Vitals",
+            data: values,
+            backgroundColor: colors,
+            datalabels: {
+                anchor: "center",
+                align: "center",
+                color: "#000",
+                font: { weight: "bold", size: 16 },
+                formatter: value => value
+            }
+        }]
+    };
+
+    const config = {
+        type: "bar",
+        data: vitalsData,
+        plugins: [ChartDataLabels],
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    };
+
+    new Chart(document.getElementById("vitalsChart"), config);
+</script>
+
+{% endblock %}

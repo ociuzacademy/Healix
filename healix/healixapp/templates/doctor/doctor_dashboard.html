@@ -1,0 +1,291 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Doctor Dashboard</title>
+    <style>
+        .custom-alert {
+            background: #ffffff;
+            color: #333;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            font-weight: 500;
+            text-align: center;
+            border-left: 5px solid;
+            opacity: 1;
+            transition: opacity 0.8s ease-out;
+        }
+
+        /* Success – green highlight */
+        .custom-alert.success {
+            border-color: #28a745;
+        }
+
+        /* Warning/Error – red highlight */
+        .custom-alert.error,
+        .custom-alert.warning {
+            border-color: #dc3545;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Eye design using CSS */
+        .eye-icon::before {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 12px;
+            border: 2px solid #777;
+            border-radius: 50px;
+        }
+
+        /* Pupil */
+        .eye-icon::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 7px;
+            width: 6px;
+            height: 6px;
+            background: #777;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        /* Closed eye */
+        .eye-closed::before {
+            border: none;
+            border-top: 2px solid #777;
+            transform: rotate(45deg);
+        }
+
+        .eye-closed::after {
+            display: none;
+        }
+        
+    </style>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #333;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+        }
+
+        .navbar .brand {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e58e26;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li {
+            position: relative;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background: rgba(229, 142, 38, 0.1);
+            color: #e58e26;
+        }
+
+        /* Dropdown */
+        .navbar ul li ul {
+            display: none;
+            position: absolute;
+            top: 35px;
+            left: 0;
+            background: #fff;
+            padding: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+        }
+
+        .navbar ul li:hover ul {
+            display: block;
+        }
+
+        .navbar ul li ul li {
+            width: 100%;
+        }
+
+        .navbar ul li ul a {
+            display: block;
+            padding: 8px 16px;
+        }
+
+        /* Container */
+        .container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #444;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h5 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #e58e26;
+        }
+
+        .card .number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .card button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #e58e26;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .card button:hover {
+            background: #d35400;
+        }
+    </style>
+</head>
+
+<body>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="brand">Doctor</div>
+    <ul>
+        <li><a href="{% url 'doctor_dashboard' %}">Home</a></li>
+        <li><a href="{% url 'login_view' %}">Logout</a></li>
+    </ul>
+</nav>
+
+
+    <!-- BODY CONTENT -->
+    <div class="container">
+        <!-- NOTIFICATION MESSAGES -->
+        {% if messages %}
+        <div id="notification-container" style="position: relative; margin-bottom: 20px;">
+            {% for message in messages %}
+            <div class="custom-alert {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        <h2>Doctor Dashboard - {{ doctor.name }}</h2>
+
+        <div class="cards">
+            <!-- Card 1 -->
+            <div class="card">
+                <h5>Patients</h5>
+                <div class="number">{{ patients.count }}</div>
+                <a href="{% url 'list_patients' %}"><button>View All Patients</button></a>
+            </div>
+
+            <!-- Card 2 -->
+            
+
+            <!-- Card 3 -->
+            <div class="card">
+                <h5>Profile</h5>
+                <p>View your profile and settings.</p>
+                <a href="{% url 'doctor_profile' doctor.id %}"><button>Go</button></a>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+<script>
+        setTimeout(function () {
+            document.querySelectorAll('.custom-alert').forEach(function (alert) {
+                alert.style.opacity = "0";   // fade out
+            });
+        }, 5000); // 5 seconds
+    </script>
+    <script>
+        const passwordField = document.getElementById("password");
+        const toggleEye = document.getElementById("toggleEye");
+
+        toggleEye.onclick = () => {
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleEye.classList.add("eye-closed");
+            } else {
+                passwordField.type = "password";
+                toggleEye.classList.remove("eye-closed");
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "nurse/nurse_dashboard.html" %}
+{% block content %}
+
+<div class="container my-4">
+
+    <!-- Back Button -->
+    <div class="mb-3">
+        <button onclick="window.history.back()" class="btn btn-primary">Back</button>
+    </div>
+
+    <h3 class="text-center mb-4">Update Profile</h3>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" value="{{ nurse.name }}" class="form-control" required>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" value="{{ nurse.email }}" class="form-control" required>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                <input type="text" name="phone_number" value="{{ nurse.phone_number }}" class="form-control">
+            </div>
+
+            <!-- Place -->
+            <div class="mb-3">
+                <label class="form-label">Place</label>
+                <input type="text" name="place" value="{{ nurse.place }}" class="form-control">
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="3">{{ nurse.address }}</textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success px-5">Update</button>
+                <a href="{% url 'nurse_profile' nurse.id %}" class="btn btn-secondary px-4 ms-2">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

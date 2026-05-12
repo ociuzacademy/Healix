@@ -1,0 +1,123 @@
+{% extends "nurse/nurse_dashboard.html" %}
+{% block content %}
+
+<div class="container my-4">
+  <div class="mb-3">
+      <button onclick="window.history.back()" class="btn btn-primary"> Back</button>
+  </div>
+
+  <h3 class="text-center mb-4">Add Vitals</h3>
+
+  <form method="POST">
+      {% csrf_token %}
+      
+      <label>Resident:</label>
+      <select name="resident" class="form-control" required>
+          <option value="">Select Resident</option>
+          {% for r in patients %}
+              <option value="{{ r.id }}">{{ r.name }}</option>
+          {% endfor %}
+      </select>
+      <br>
+
+      <label>Doctor:</label>
+      <select name="doctor" class="form-control" required>
+          <option value="">Select Doctor</option>
+          {% for d in doctors %}
+              <option value="{{ d.id }}">{{ d.name }}</option>
+          {% endfor %}
+      </select>
+      <br>
+
+      <label>Blood Pressure (mmHg)</label>
+<input type="text" name="blood_pressure" id="bp_input"
+       class="form-control" placeholder="120/80">
+<br>
+
+      <br>
+
+      <label>Blood Sugar (mg/dL)</label>
+      <input type="number" step="0.1" name="blood_sugar" class="form-control" required>
+      <br>
+
+      <label>Heart Rate (bpm)</label>
+      <input type="number" name="heart_rate" class="form-control" required>
+      <br>
+
+      <label>Oxygen Level (%)</label>
+      <input type="number" step="0.1" name="oxygen_level" class="form-control" required>
+      <br>
+
+      <button class="btn btn-primary mt-2" type="submit">Save Vitals</button>
+  </form>
+
+  <h4 class="mt-5">Vitals Records</h4>
+  <table class="table table-bordered text-center">
+      <thead class="table-dark">
+          <tr>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Blood Pressure</th>
+              <th>Blood Sugar</th>
+              <th>Heart Rate</th>
+              <th>Oxygen Level</th>
+              <th>Recorded At</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for vitals in vitals_list %}
+          <tr>
+              <td>{{ vitals.resident.name }}</td>
+              <td>{{ vitals.doctor.name }}</td>
+              <td>{{ vitals.blood_pressure }}</td>
+              <td>{{ vitals.blood_sugar }}</td>
+              <td>{{ vitals.heart_rate }}</td>
+              <td>{{ vitals.oxygen_level }}</td>
+              <td>{{ vitals.created_at|date:"Y-m-d H:i" }}</td>
+              <td>
+                  <a href="{% url 'delete_vitals' vitals.id %}" class="btn btn-danger btn-sm"
+                     onclick="return confirm('Are you sure?')">Delete</a>
+              </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7">No records found</td></tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+<script>
+async function fetchLatestVitals() {
+    try {
+        const response = await fetch("{% url 'latest_vitals_api' %}");
+        const data = await response.json();
+
+        // heart rate
+       // USE BP PULSE INSTEAD OF DEVICE HEART RATE
+if (data.bp_pulse !== undefined)
+    document.querySelector('input[name="heart_rate"]').value = data.bp_pulse;
+
+        // spo2
+        if (data.spo2 !== undefined)
+            document.querySelector('input[name="oxygen_level"]').value = data.spo2;
+
+        // glucose
+        if (data.glucose !== undefined)
+            document.querySelector('input[name="blood_sugar"]').value = data.glucose;
+
+        // BLOOD PRESSURE FIX
+        if (data.bp_sys !== undefined && data.bp_dia !== undefined) {
+            const bp = `${data.bp_sys}/${data.bp_dia}`;
+            document.getElementById("bp_input").value = bp;
+        }
+
+    } catch (err) {
+        console.log("Vitals fetch failed:", err);
+    }
+}
+
+setInterval(fetchLatestVitals, 3000);
+fetchLatestVitals();
+</script>
+
+{% endblock %}
